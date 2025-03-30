@@ -1,14 +1,17 @@
-import asyncio
-import openai
+iimport asyncio
+from openai import OpenAI
+import os
 from playwright.async_api import async_playwright
 
-import os
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+# 🔐 Получаем API-ключ из переменной окружения
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+# 🔗 Ссылки на страницы резиденций
 urls = [
     "https://campus.youfirst.co/fr/residences/residence-etudiante-bordeaux-bassins-a-flot"
 ]
 
+# 📌 Полный промпт (вставь свой)
 base_prompt = """
 Ты специалист по созданию описаний студенческих резиденций. Используй только информацию с предоставленного URL, чтобы подготовить текст на русском языке, строго соблюдая структуру, правила и форматирование. Не нарушай эти правила.
 
@@ -62,8 +65,6 @@ base_prompt = """
 Общая длина этой части от 500 до 650 символов с пробелами. Строго соблюдай длину.
 """
 
-   
-
 async def fetch_text_from_url(url):
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -77,7 +78,7 @@ async def process_url(url, index):
     print(f"Обрабатываю: {url}")
     text = await fetch_text_from_url(url)
     prompt = f"{base_prompt}\n\nТекст страницы:\n{text[:100000]}"
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.4
