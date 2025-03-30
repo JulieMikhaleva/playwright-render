@@ -69,7 +69,8 @@ async def fetch_text_from_url(url):
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
-        await page.goto(url, timeout=60000)
+        await page.goto(url, timeout=120000)
+        await page.wait_for_load_state("load")
         text = await page.inner_text("body")
         await browser.close()
         return text
