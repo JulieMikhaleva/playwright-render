@@ -1,4 +1,4 @@
-iimport asyncio
+import asyncio
 from openai import OpenAI
 import os
 from playwright.async_api import async_playwright
