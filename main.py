@@ -2,7 +2,8 @@ import asyncio
 import openai
 from playwright.async_api import async_playwright
 
-openai.api_key = "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"  # ← сюда вставь свой API-ключ
+import os
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 urls = [
     "https://campus.youfirst.co/fr/residences/residence-etudiante-bordeaux-bassins-a-flot"
