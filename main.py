@@ -85,9 +85,10 @@ async def process_url(url, index):
     )
     output = response.choices[0].message.content
     filename = f"residence_{index + 1}.txt"
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(output)
-    print(f"✅ Сохранено в {filename}")
+    print("\n" + "="*40)
+    print(f"Описание для {url}:\n")
+    print(output)
+    print("="*40 + "\n")
 
 async def main():
     for index, url in enumerate(urls):
